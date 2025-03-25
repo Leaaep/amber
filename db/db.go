@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-const MongoUrl = "mongodb://amber-db:27017/"
 const DatabaseName = "amber_db"
+const MongoUrl = "mongodb://root:root@amber-db:27017/"
 
 var Client *mongo.Client
 var Database *mongo.Database
@@ -23,13 +23,18 @@ func Connect(router *echo.Echo) error {
 	}
 
 	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		return err
+	}
+
 	router.Logger.Print("Connected to MongoDB")
+	setupDB(client)
 	Client = client
-	return err
+	return nil
 }
 
-func setupDB() {
-	Database = Client.Database(DatabaseName)
+func setupDB(client *mongo.Client) {
+	Database = client.Database(DatabaseName)
 	SnakeCollection = Database.Collection("snake")
 	TerrariumCollection = Database.Collection("terrarium")
 }

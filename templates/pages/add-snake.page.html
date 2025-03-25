@@ -1,0 +1,29 @@
+{{define "add-snake-page"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="../../public/Styles.css">
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script src="https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js"></script>
+</head>
+
+<body>
+<form hx-post="/snake"
+      hx-trigger="submit"
+      hx-ext="json-enc"
+      hx-headers='{"Content-Type": "application/json"}'>
+    <label for="name">Name:</label>
+    <input id="name" name="name" type="text">
+    <label for="birthdate">Birthdate:</label>
+    <input id="birthdate" name="birthdate" type="date">
+    <label for="feedCycle">FeedCycle:</label>
+    <input id="feedCycle" name="feedCycle" type="number">
+    <label for="winterBreakCycle">WinterBreakCycle:</label>
+    <input id="winterBreakCycle" name="winterBreakCycle" type="number">
+    <button type="submit">Submit</button>
+</form>
+</body>
+
+</html>
+{{end}}

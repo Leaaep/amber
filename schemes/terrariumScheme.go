@@ -14,7 +14,6 @@ type Terrarium struct {
 
 func (t Terrarium) New(name string, snakes []Snake, length int16, width int16, height int16, maintenanceCycle int8) Terrarium {
 	return Terrarium{
-		ID:               bson.ObjectID{},
 		Name:             name,
 		Snakes:           snakes,
 		Length:           length,

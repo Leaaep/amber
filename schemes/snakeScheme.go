@@ -12,7 +12,7 @@ type Snake struct {
 
 func (s Snake) New(name string, birthdate bson.DateTime, feedCycle int8, winterBreakCycle int8) Snake {
 	return Snake{
-		ID:               bson.ObjectID{},
+		ID:               bson.NewObjectID(),
 		Name:             name,
 		Birthdate:        birthdate,
 		FeedCycle:        feedCycle,

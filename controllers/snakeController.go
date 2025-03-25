@@ -3,47 +3,44 @@ package controllers
 import (
 	"amber/db"
 	"amber/schemes"
-	"context"
-	"errors"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"encoding/json"
+	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/v2/bson"
-	"log"
+	"net/http"
 )
 
-func GetSnake(id bson.ObjectID) (schemes.Snake, error) {
-	var snake schemes.Snake
-	err := db.SnakeCollection.FindOne(context.TODO(), bson.M{"_id": id}).Decode(snake)
-	if err != nil {
-		log.Fatal(err)
-		return schemes.Snake{}, err
-	}
-	return snake, nil
-}
+func SetupSnakeRoutes(router *echo.Echo) {
+	router.GET("/snake/:id", func(c echo.Context) error {
+		id, err := bson.ObjectIDFromHex(c.Param("id"))
+		snake, err := db.GetSnake(id)
+		if err != nil {
+			return err
+		}
 
-func GetSnakes() ([]schemes.Snake, error) {
-	var snakes []schemes.Snake
-	cursor, err := db.SnakeCollection.Find(context.TODO(), bson.D{})
-	if err != nil {
-		log.Fatal(err)
-		return []schemes.Snake{}, err
-	}
+		err = c.Render(http.StatusOK, "snake-card-component", snake)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 
-	err = cursor.All(context.TODO(), snakes)
-	if err != nil {
-		log.Fatal(err)
-		return []schemes.Snake{}, err
-	}
-	return snakes, nil
-}
-
-func AddSnake(snake schemes.Snake) (schemes.Snake, error) {
-	newSnake, err := db.SnakeCollection.InsertOne(context.TODO(), snake)
-	if err != nil {
-		return schemes.Snake{}, err
-	}
-	snake.ID = bson.ObjectID(newSnake.InsertedID.(primitive.ObjectID))
-	if snake.ID.IsZero() {
-		return schemes.Snake{}, errors.New("no ID to new snakes assigned")
-	}
-	return snake, nil
+	router.GET("/snake/new", func(c echo.Context) error {
+		err := c.Render(http.StatusOK, "add-snake-page", "")
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	router.POST("/snake", func(c echo.Context) error {
+		newSnake := schemes.Snake{}
+		err := json.NewDecoder(c.Request().Body).Decode(&newSnake)
+		if err != nil {
+			return err
+		}
+		_, err = db.SaveSnake(newSnake)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 }

@@ -1,0 +1,28 @@
+{{define "add-terrarium-page"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="../../public/Styles.css">
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+
+<body>
+<form>
+    <label for="name"></label>
+    <input id="name" type="text">
+
+    <label for="snakes"></label>
+    <select name="snakes" id="snakes" hx-get="/snake">
+    </select>
+
+    <label for="feedCycle"></label>
+    <input id="feedCycle" type="number">
+    <label for="winterBreakCycle"></label>
+    <input id="winterBreakCycle" type="number">
+    <button type="submit" hx-post="/snake"></button>
+</form>
+</body>
+
+</html>
+{{end}}

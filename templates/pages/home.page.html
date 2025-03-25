@@ -1,12 +1,17 @@
+{{define "home-page"}}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Dashboard</title>
-        <link rel="stylesheet" type="text/css" href="../assets/Styles.css">
+        <link rel="stylesheet" type="text/css" href="../../public/Styles.css">
         <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     </head>
 
-<body class="mocha">
+<body>
+    <a href="/snake/new">
+        <p>Add Snek</p>
+    </a>
+
     <h1>Amber</h1>
     <h4>Feed Cycle</h4>
     <p>Next feeding: Monday</p>
@@ -20,3 +25,4 @@
 </body>
 
 </html>
+{{end}}

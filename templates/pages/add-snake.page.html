@@ -1,28 +1,47 @@
 {{define "add-snake-page"}}
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="dark" lang="en">
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="../../public/Styles.css">
+    <link rel="stylesheet" type="text/css" href="../../public/global.css">
+    <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet"
+          integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js"></script>
 </head>
 
 <body>
-<form hx-post="/snake"
-      hx-trigger="submit"
-      hx-ext="json-enc"
-      hx-headers='{"Content-Type": "application/json"}'>
-    <label for="name">Name:</label>
-    <input id="name" name="name" type="text">
-    <label for="birthdate">Birthdate:</label>
-    <input id="birthdate" name="birthdate" type="date">
-    <label for="feedCycle">FeedCycle:</label>
-    <input id="feedCycle" name="feedCycle" type="number">
-    <label for="winterBreakCycle">WinterBreakCycle:</label>
-    <input id="winterBreakCycle" name="winterBreakCycle" type="number">
-    <button type="submit">Submit</button>
-</form>
+<main class="align-items-center justify-content-center d-flex">
+    <form class="flex-column col-8 m-2"
+          hx-post="/snake"
+          hx-trigger="submit"
+          hx-ext="json-enc"
+          hx-headers='{"Content-Type": "application/json"}'
+    >
+
+        <h2 class="h2">Add Snake</h2>
+
+        <label class="form-label" for="name">Name:</label>
+        <input class="form-control my-1" id="name" name="name" type="text">
+
+        <label class="form-label" for="birthdate">Birthdate:</label>
+        <input class="form-control my-1" id="birthdate" name="birthdate" type="date">
+
+        <label class="form-label" for="lastFeedingDate">FeedCycle:</label>
+        <input class="form-control my-1" id="lastFeedingDate" name="lastFeedingDate" type="date">
+
+        <label class="form-label" for="feedInterval">Feed Interval (Weeks):</label>
+        <input class="form-control my-1" id="feedInterval" name="feedingInterval" type="number">
+
+        <label class="form-label" for="winterBreakStartDate">Winter Break start date:</label>
+        <input class="form-control my-1" id="winterBreakStartDate" name="winterBreakStartDate" type="date">
+
+        <label class="form-label" for="winterBreakDuration">Winter Break duration (Weeks):</label>
+        <input class="form-control my-1" id="winterBreakDuration" name="winterBreakDuration" type="number">
+
+        <button class="btn btn-default my-2" type="submit">Save</button>
+    </form>
+</main>
 </body>
 
 </html>

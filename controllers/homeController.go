@@ -14,6 +14,7 @@ func SetupHomeRoutes(router *echo.Echo) {
 
 		err := c.Render(http.StatusOK, "home-page", "")
 		if err != nil {
+			router.Logger.Error(err)
 			return err
 		}
 		return nil

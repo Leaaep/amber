@@ -1,27 +1,24 @@
 {{define "home-page"}}
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="dark" lang="en">
     <head>
         <title>Dashboard</title>
-        <link rel="stylesheet" type="text/css" href="../../public/Styles.css">
+        <link rel="stylesheet" type="text/css" href="../../public/global.css">
+        <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet" integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
         <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     </head>
 
 <body>
-    <a href="/snake/new">
+    {{ template "navbar" }}
+
+    <a class="link-light" href="/snake/new">
         <p>Add Snek</p>
     </a>
 
-    <h1>Amber</h1>
-    <h4>Feed Cycle</h4>
-    <p>Next feeding: Monday</p>
-    <h4>Maintenance Cycle</h4>
-    <p>Next Maintenance: Tomorrow</p>
-    <h4>Winter break Cycle</h4>
-    <p>Next Winter break: November</p>
+     {{/* template "snake-card-component" . */}}
 
-    <button>Edit</button>
-    <button>Remove</button>
+    <button class="btn btn-default">Edit</button>
+    <button class="btn btn-default">Remove</button>
 </body>
 
 </html>

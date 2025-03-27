@@ -1,27 +1,48 @@
 {{define "add-terrarium-page"}}
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="dark" lang="en">
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="../../public/Styles.css">
+    <link rel="stylesheet" type="text/css" href="../../public/global.css">
+    <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet"
+          integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script src="https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js"></script>
 </head>
 
 <body>
-<form>
-    <label for="name"></label>
-    <input id="name" type="text">
+<main class="align-items-center justify-content-center d-flex">
+    <form class="flex-column col-8 m-2"
+            hx-post="/terrarium"
+            hx-trigger="submit"
+            hx-ext="json-enc"
+            hx-headers='{"Content-Type": "application/json"}'>
 
-    <label for="snakes"></label>
-    <select name="snakes" id="snakes" hx-get="/snake">
-    </select>
+        <h2 class="h2">Add Terrarium</h2>
 
-    <label for="feedCycle"></label>
-    <input id="feedCycle" type="number">
-    <label for="winterBreakCycle"></label>
-    <input id="winterBreakCycle" type="number">
-    <button type="submit" hx-post="/snake"></button>
-</form>
+        <label class="form-label" for="name">Name</label>
+        <input class="form-control my-1" id="name" name="name" type="text">
+
+        <!-- SELECT SNAKES !!!!!!! -->
+
+        <label class="form-label" for="length">Length</label>
+        <input class="form-control my-1" id="length" name="length" type="number">
+
+        <label class="form-label" for="width">Width</label>
+        <input class="form-control my-1" id="width" name="width" type="number">
+
+        <label class="form-label" for="height">Height</label>
+        <input class="form-control my-1" id="height" name="height" type="number">
+
+        <label class="form-label" for="lastMaintenanceDate">Last Maintenance</label>
+        <input class="form-control my-1" id="lastMaintenanceDate" name="lastMaintenanceDate" type="date">
+
+        <label class="form-label" for="maintenanceInterval">Maintenance Interval (Weeks)</label>
+        <input class="form-control my-1" id="maintenanceInterval" name="maintenanceInterval" type="number">
+
+        <button class="btn btn-default my-2" type="submit" hx-post="/terrarium">Save</button>
+    </form>
+</main>
 </body>
 
 </html>

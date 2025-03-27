@@ -10,35 +10,27 @@ import (
 )
 
 func SetupSnakeRoutes(router *echo.Echo) {
-	router.GET("/snake/:id", func(c echo.Context) error {
-		id, err := bson.ObjectIDFromHex(c.Param("id"))
-		snake, err := db.GetSnake(id)
-		if err != nil {
-			return err
-		}
-
-		err = c.Render(http.StatusOK, "snake-card-component", snake)
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-
 	router.GET("/snake/new", func(c echo.Context) error {
 		err := c.Render(http.StatusOK, "add-snake-page", "")
 		if err != nil {
+			router.Logger.Error(err)
 			return err
 		}
 		return nil
 	})
 	router.POST("/snake", func(c echo.Context) error {
-		newSnake := schemes.Snake{}
-		err := json.NewDecoder(c.Request().Body).Decode(&newSnake)
+		newSnake := schemes.SnakeJson{}
+		body := c.Request().Body
+		err := json.NewDecoder(body).Decode(&newSnake)
 		if err != nil {
+			router.Logger.Error(err)
 			return err
 		}
-		_, err = db.SaveSnake(newSnake)
+		convertedSnake, err := schemes.ConvertToSnake(newSnake)
+		convertedSnake.ID = bson.NewObjectID()
+		_, err = db.SaveSnake(convertedSnake)
 		if err != nil {
+			router.Logger.Error(err)
 			return err
 		}
 		return nil

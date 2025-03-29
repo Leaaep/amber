@@ -1,9 +1,8 @@
-{{define "add-snake-page"}}
+{{ define "add-snake-page" }}
 <!DOCTYPE html>
 <html data-bs-theme="dark" lang="en">
 <head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="../../public/global.css">
+    <title>Add Snake</title>
     <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet"
           integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
@@ -13,7 +12,7 @@
 <body>
 <main class="align-items-center justify-content-center d-flex">
     <form class="flex-column col-8 m-2"
-          hx-post="/snake"
+          hx-post="/terrarium/{{ .ID.Hex }}/snake"
           hx-trigger="submit"
           hx-ext="json-enc"
           hx-headers='{"Content-Type": "application/json"}'
@@ -45,4 +44,4 @@
 </body>
 
 </html>
-{{end}}
+{{ end }}

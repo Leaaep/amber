@@ -18,13 +18,14 @@ type Terrarium struct {
 }
 
 type TerrariumJson struct {
-	Name                string  `bson:"name"`
-	Snakes              []Snake `bson:"snakes"`
-	Length              string  `bson:"length"`
-	Width               string  `bson:"width"`
-	Height              string  `bson:"height"`
-	LastMaintenanceDate string  `bson:"lastMaintenanceDate"`
-	MaintenanceInterval string  `bson:"maintenanceInterval"`
+	ID                  bson.ObjectID `bson:"_id"`
+	Name                string        `bson:"name"`
+	Snakes              []SnakeJson   `bson:"snakes"`
+	Length              string        `bson:"length"`
+	Width               string        `bson:"width"`
+	Height              string        `bson:"height"`
+	LastMaintenanceDate string        `bson:"lastMaintenanceDate"`
+	MaintenanceInterval string        `bson:"maintenanceInterval"`
 }
 
 func ConvertToTerrarium(json TerrariumJson) (Terrarium, error) {
@@ -39,10 +40,19 @@ func ConvertToTerrarium(json TerrariumJson) (Terrarium, error) {
 		return Terrarium{}, err
 	}
 
+	var snakes []Snake
+	for _, snake := range json.Snakes {
+		convertedSnake, err := ConvertToSnake(snake)
+		if err != nil {
+			return Terrarium{}, err
+		}
+		snakes = append(snakes, convertedSnake)
+	}
+
 	return Terrarium{
-			ID:                  bson.ObjectID{},
+			ID:                  json.ID,
 			Name:                json.Name,
-			Snakes:              json.Snakes,
+			Snakes:              snakes,
 			Length:              length,
 			Width:               width,
 			Height:              height,

@@ -27,6 +27,6 @@ func main() {
 
 func setupRoutes() {
 	controllers.SetupHomeRoutes(router)
-	controllers.SetupSnakeRoutes(router)
 	controllers.SetupTerrariumRoutes(router)
+	controllers.Setup404Routes(router)
 }

@@ -1,11 +1,35 @@
+{{ define "terrarium-page" }}
 <!DOCTYPE html>
 <html data-bs-theme="dark" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet" integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
+    <title>{{ .Name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet"
+          integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 <body>
+<main class="d-flex align-items-center justify-content-center">
+    <div class="card flex-column align-items-center m-3">
+        <div class="card-header mb-2">
+            <h4 class="h4">{{ .Name }}</h4>
+        </div>
+        <div class="card-body align-items-center">
+            <p>Snakes:</p>
+            {{ range .Snakes }}
+            <p>{{ .Name }}</p>
+            {{ end }}
 
+            <p>Size: {{ .Length }}x{{ .Width }}x{{ .Height }}</p>
+            <p>Last Maintenance: {{ .LastMaintenanceDate.Format "Jan 02, 2006" }}</p>
+            <p>Maintenance Interval: {{ .MaintenanceInterval }}</p>
+        </div>
+        <div class="card-footer flex-row">
+            <button class="btn btn-default">Edit</button>
+            <button class="btn btn-default">Delete</button>
+        </div>
+    </div>
+</main>
 </body>
 </html>
+{{ end }}

@@ -1,22 +1,19 @@
-{{ define "home-page" }}
+{{ define "404-page" }}
 <!DOCTYPE html>
 <html data-bs-theme="dark" lang="en">
 <head>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <title>404 - Not Found!</title>
     <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet"
           integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
-
 <body>
-{{ template "navbar" }}
 
-<div class="d-flex flex-row col-12 m-4 justify-content-center align-items-center">
-    {{ range . }}
-    {{ template "terrarium-card-component" . }}
-    {{ end }}
+<div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 100%">
+    <h1 class="h1">404 - NOT FOUND :(</h1>
 </div>
-</body>
 
+</body>
 </html>
 {{ end }}

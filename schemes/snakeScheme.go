@@ -17,12 +17,13 @@ type Snake struct {
 }
 
 type SnakeJson struct {
-	Name                 string `bson:"name"`
-	Birthdate            string `bson:"birthdate"`
-	LastFeedingDate      string `bson:"lastFeedingDate"`
-	FeedingInterval      string `bson:"feedingInterval"`
-	WinterBreakStartDate string `bson:"winterBreakStartDate"`
-	WinterBreakDuration  string `bson:"winterBreakDuration"`
+	ID                   bson.ObjectID `bson:"_id"`
+	Name                 string        `bson:"name"`
+	Birthdate            string        `bson:"birthdate"`
+	LastFeedingDate      string        `bson:"lastFeedingDate"`
+	FeedingInterval      string        `bson:"feedingInterval"`
+	WinterBreakStartDate string        `bson:"winterBreakStartDate"`
+	WinterBreakDuration  string        `bson:"winterBreakDuration"`
 }
 
 func ConvertToSnake(json SnakeJson) (Snake, error) {
@@ -38,7 +39,7 @@ func ConvertToSnake(json SnakeJson) (Snake, error) {
 	}
 
 	return Snake{
-		ID:                   bson.ObjectID{},
+		ID:                   json.ID,
 		Name:                 json.Name,
 		Birthdate:            birthdate,
 		LastFeedingDate:      lastFeedingDate,

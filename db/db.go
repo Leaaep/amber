@@ -10,7 +10,6 @@ import (
 const DatabaseName = "amber_db"
 const MongoUrl = "mongodb://root:root@amber-db:27017/"
 
-var Client *mongo.Client
 var Database *mongo.Database
 var SnakeCollection *mongo.Collection
 var TerrariumCollection *mongo.Collection
@@ -29,7 +28,6 @@ func Connect(router *echo.Echo) error {
 
 	router.Logger.Print("Connected to MongoDB")
 	setupDB(client)
-	Client = client
 	return nil
 }
 

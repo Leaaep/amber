@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"net/http"
+	"time"
 )
 
 func SetupTerrariumRoutes(router *echo.Echo) {
@@ -21,8 +22,6 @@ func SetupTerrariumRoutes(router *echo.Echo) {
 
 	router.GET("/terrarium/:id", func(c echo.Context) error {
 		hexId := c.Param("id")
-		router.Logger.Print(hexId)
-		router.Logger.Print(bson.ObjectIDFromHex(hexId))
 		terrarium, err := db.GetTerrarium(hexId)
 		if err != nil {
 			router.Logger.Error(err)
@@ -35,6 +34,26 @@ func SetupTerrariumRoutes(router *echo.Echo) {
 
 		err = c.Render(http.StatusOK, "terrarium-page", terrarium)
 		if err != nil {
+			return err
+		}
+		return nil
+	})
+
+	router.GET("/terrarium/:id/update", func(c echo.Context) error {
+		hexId := c.Param("id")
+		terrarium, err := db.GetTerrarium(hexId)
+		if err != nil {
+			router.Logger.Error(err)
+			err := c.Render(http.StatusNotFound, "404-page", "")
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+
+		err = c.Render(http.StatusOK, "update-terrarium-page", terrarium)
+		if err != nil {
+			router.Logger.Error(err)
 			return err
 		}
 		return nil
@@ -58,6 +77,70 @@ func SetupTerrariumRoutes(router *echo.Echo) {
 		return nil
 	})
 
+	router.PUT("/terrarium/:terrariumID", func(c echo.Context) error {
+		terrariumJson := schemes.TerrariumJson{}
+		terrariumID := c.Param("terrariumID")
+		body := c.Request().Body
+
+		err := json.NewDecoder(body).Decode(&terrariumJson)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+
+		terrarium, err := schemes.ConvertToTerrarium(terrariumJson)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+
+		objectId, err := bson.ObjectIDFromHex(terrariumID)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+
+		terrarium.ID = objectId
+
+		err = db.UpdateTerrarium(terrarium, terrariumID)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+		return nil
+	})
+
+	router.PUT("/terrarium/:terrariumID/lastMaintenanceDate", func(c echo.Context) error {
+		terrariumJson := schemes.TerrariumJson{}
+		terrariumID := c.Param("terrariumID")
+		body := c.Request().Body
+
+		err := json.NewDecoder(body).Decode(&terrariumJson)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+
+		terrarium, err := db.GetTerrarium(terrariumID)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+
+		terrarium.LastMaintenanceDate, err = time.Parse("2006-01-02", terrariumJson.LastMaintenanceDate)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+
+		err = db.UpdateTerrarium(terrarium, terrariumID)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+		return nil
+	})
+
 	/* --- SNAKE ROUTES --- */
 	router.GET("/terrarium/:terrariumID/snake/new", func(c echo.Context) error {
 		hexId := c.Param("terrariumID")
@@ -72,6 +155,36 @@ func SetupTerrariumRoutes(router *echo.Echo) {
 		}
 
 		err = c.Render(http.StatusOK, "add-snake-page", terrarium)
+		if err != nil {
+			router.Logger.Error(err)
+			return err
+		}
+		return nil
+	})
+
+	router.GET("/terrarium/:terrariumID/snake/:snakeId/update", func(c echo.Context) error {
+		terrariumID := c.Param("terrariumID")
+		snakeID := c.Param("snakeID")
+		snakeObjectID, err := bson.ObjectIDFromHex(snakeID)
+		terrarium, err := db.GetTerrarium(terrariumID)
+
+		var snakeToUpdate schemes.Snake
+		for _, snake := range terrarium.Snakes {
+			if snakeObjectID == snake.ID {
+				snakeToUpdate = snake
+			}
+		}
+
+		if err != nil {
+			router.Logger.Error(err)
+			err := c.Render(http.StatusNotFound, "404-page", "")
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+
+		err = c.Render(http.StatusOK, "update-snake-page", snakeToUpdate)
 		if err != nil {
 			router.Logger.Error(err)
 			return err
@@ -104,7 +217,7 @@ func SetupTerrariumRoutes(router *echo.Echo) {
 		}
 		return nil
 	})
-	router.POST("/terrarium/:terrariumID/snake", func(c echo.Context) error {
+	router.PUT("/terrarium/:terrariumID/snake", func(c echo.Context) error {
 		terrariumID := c.Param("terrariumID")
 
 		newSnake := schemes.SnakeJson{}
@@ -129,7 +242,7 @@ func SetupTerrariumRoutes(router *echo.Echo) {
 		}
 
 		terrarium.Snakes = append(terrarium.Snakes, convertedSnake)
-		err = db.UpdateTerrarium(terrarium, terrarium.ID)
+		err = db.UpdateTerrarium(terrarium, terrariumID)
 		if err != nil {
 			router.Logger.Error(err)
 			return err

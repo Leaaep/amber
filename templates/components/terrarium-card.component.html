@@ -1,25 +1,42 @@
 {{ define "terrarium-card-component" }}
-<div class="card d-flex align-items-center justify-content-center flex-column col-4" style="height: 20rem">
+{{ $NextMaintenance := .LastMaintenanceDate | addDays .MaintenanceInterval }}
+{{ $TimeNow := .LastMaintenanceDate | timeNow }}
+<div class="card d-flex align-items-center justify-content-center flex-column col-4" style="height: 30rem">
     <div class="card-header">
         <h4 class="h4">{{ .Name }}</h4>
     </div>
     <div class="card-body d-flex align-items-center justify-content-center flex-column">
-        <p>Snakes:</p>
-        <div class="flex-row">
-            {{ $TerrariumID := .ID.Hex }}
-            {{ range .Snakes }}
-            <a href="/terrarium/{{ $TerrariumID }}/snake/{{ .ID.Hex }}">
-                <button class="btn btn-default">{{ .Name }}</button>
-            </a>
-            {{ end }}
+        <div class="card d-flex align-items-center justify-content-center" style="width: 100%">
+            <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                <p>Size: {{ .Length }}x{{ .Width }}x{{ .Height }}</p>
+                <p>Last Maintenance: {{ .LastMaintenanceDate.Format "Jan 02, 2006" }}</p>
+                <p>Next Maintenance: {{ $NextMaintenance.Format "Jan 02, 2006" }}</p>
+                <a href="/terrarium/{{ .ID.Hex }}">
+                    <button class="btn btn-default">Info</button>
+                </a>
+                <button class="btn btn-default m-2"
+                        hx-put="/terrarium/{{ .ID.Hex }}/lastMaintenanceDate"
+                        hx-ext="json-enc"
+                        hx-vals='"lastMaintenanceDate": "{{ $TimeNow }}"'
+                        hx-headers='{"Content-Type": "application/json"}'
+                >Update Maintenance
+                </button>
+            </div>
         </div>
-        <p>Size: {{ .Length }}x{{ .Width }}x{{ .Height }}</p>
-        <p>Last Maintenance: {{ .LastMaintenanceDate.Format "Jan 02, 2006" }}</p>
-        <p>Maintenance Interval: {{ .MaintenanceInterval }}</p>
-        <a href="/terrarium/{{ .ID.Hex }}">
-            <button class="btn btn-default">Info</button>
-        </a>
 
+        <div class="card m-3 d-flex align-items-center justify-content-center" style="width: 100%">
+            <div class="card-header">
+                <p>Snakes:</p>
+            </div>
+            <div class="flex-row card-body d-flex align-items-center justify-content-center">
+                {{ $TerrariumID := .ID.Hex }}
+                {{ range .Snakes }}
+                <a href="/terrarium/{{ $TerrariumID }}/snake/{{ .ID.Hex }}">
+                    <button class="btn btn-default">{{ .Name }}</button>
+                </a>
+                {{ end }}
+            </div>
+        </div>
     </div>
 </div>
 {{ end }}

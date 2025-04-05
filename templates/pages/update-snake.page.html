@@ -1,4 +1,4 @@
-{{ define "add-snake-page" }}
+{{ define "update-snake-page" }}
 <!DOCTYPE html>
 <html data-bs-theme="dark" lang="en">
 <head>
@@ -22,22 +22,22 @@
         <h2 class="h2">Add Snake</h2>
 
         <label class="form-label" for="name">Name:</label>
-        <input class="form-control my-1" id="name" name="name" type="text">
+        <input class="form-control my-1" id="name" name="name" type="text" value="{{ .Name }}">
 
         <label class="form-label" for="birthdate">Birthdate:</label>
-        <input class="form-control my-1" id="birthdate" name="birthdate" type="date">
+        <input class="form-control my-1" id="birthdate" name="birthdate" type="date" value="{{ .Birthdate }}">
 
         <label class="form-label" for="lastFeedingDate">FeedCycle:</label>
-        <input class="form-control my-1" id="lastFeedingDate" name="lastFeedingDate" type="date">
+        <input class="form-control my-1" id="lastFeedingDate" name="lastFeedingDate" type="date" value="{{ .LastFeedingDate }}">
 
         <label class="form-label" for="feedInterval">Feed Interval (Weeks):</label>
-        <input class="form-control my-1" id="feedInterval" name="feedingInterval" type="number">
+        <input class="form-control my-1" id="feedInterval" name="feedingInterval" type="number" value="{{ .FeedingInterval }}">
 
         <label class="form-label" for="winterBreakStartDate">Winter Break start date:</label>
-        <input class="form-control my-1" id="winterBreakStartDate" name="winterBreakStartDate" type="date">
+        <input class="form-control my-1" id="winterBreakStartDate" name="winterBreakStartDate" type="date" value="{{ .WinterBreakStartDate }}">
 
         <label class="form-label" for="winterBreakDuration">Winter Break duration (Weeks):</label>
-        <input class="form-control my-1" id="winterBreakDuration" name="winterBreakDuration" type="number">
+        <input class="form-control my-1" id="winterBreakDuration" name="winterBreakDuration" type="number" value="{{ .WinterBreakDuration }}">
 
         <button class="btn btn-default my-2" type="submit">Save</button>
     </form>

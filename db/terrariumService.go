@@ -45,8 +45,13 @@ func SaveTerrarium(terrarium schemes.Terrarium) (schemes.Terrarium, error) {
 
 }
 
-func UpdateTerrarium(terrarium schemes.Terrarium, id bson.ObjectID) error {
-	_, err := TerrariumCollection.UpdateByID(context.Background(), id, bson.D{{"$set", bson.D{{"snakes", terrarium.Snakes}}}})
+func UpdateTerrarium(terrarium schemes.Terrarium, id string) error {
+	objectId, err := bson.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+
+	_, err = TerrariumCollection.ReplaceOne(context.Background(), bson.D{{"_id", objectId}}, terrarium)
 	if err != nil {
 		return err
 	}

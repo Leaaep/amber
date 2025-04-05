@@ -11,7 +11,6 @@ const DatabaseName = "amber_db"
 const MongoUrl = "mongodb://root:root@amber-db:27017/"
 
 var Database *mongo.Database
-var SnakeCollection *mongo.Collection
 var TerrariumCollection *mongo.Collection
 
 func Connect(router *echo.Echo) error {
@@ -33,6 +32,5 @@ func Connect(router *echo.Echo) error {
 
 func setupDB(client *mongo.Client) {
 	Database = client.Database(DatabaseName)
-	SnakeCollection = Database.Collection("snake")
 	TerrariumCollection = Database.Collection("terrarium")
 }

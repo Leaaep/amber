@@ -1,8 +1,8 @@
-{{ define "add-terrarium-page" }}
+{{ define "update-terrarium-page" }}
 <!DOCTYPE html>
 <html data-bs-theme="dark" lang="en">
 <head>
-    <title>Add Terrarium</title>
+    <title>Update Terrarium</title>
     <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@2.2.0/dist/css/fastbootstrap.min.css" rel="stylesheet"
           integrity="sha256-V6lu+OdYNKTKTsVFBuQsyIlDiRWiOmtC8VQ8Lzdm2i4=" crossorigin="anonymous">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
@@ -13,30 +13,30 @@
 {{ template "navbar" }}
 <main class="align-items-center justify-content-center d-flex">
     <form class="flex-column col-8 m-2"
-          hx-post="/terrarium"
+          hx-put="/terrarium/{{ .ID.Hex }}"
           hx-trigger="submit"
           hx-ext="json-enc"
           hx-headers='{"Content-Type": "application/json"}'>
 
-        <h2 class="h2">Add Terrarium</h2>
+        <h2 class="h2">Update Terrarium</h2>
 
         <label class="form-label" for="name">Name</label>
-        <input class="form-control my-1" id="name" name="name" type="text">
+        <input class="form-control my-1" id="name" name="name" type="text" value="{{ .Name }}">
 
         <label class="form-label" for="length">Length</label>
-        <input class="form-control my-1" id="length" name="length" type="number">
+        <input class="form-control my-1" id="length" name="length" type="number" value="{{ .Length }}">
 
         <label class="form-label" for="width">Width</label>
-        <input class="form-control my-1" id="width" name="width" type="number">
+        <input class="form-control my-1" id="width" name="width" type="number" value="{{ .Width }}">
 
         <label class="form-label" for="height">Height</label>
-        <input class="form-control my-1" id="height" name="height" type="number">
+        <input class="form-control my-1" id="height" name="height" type="number" value="{{ .Height }}">
 
         <label class="form-label" for="lastMaintenanceDate">Last Maintenance</label>
-        <input class="form-control my-1" id="lastMaintenanceDate" name="lastMaintenanceDate" type="date">
+        <input class="form-control my-1" id="lastMaintenanceDate" name="lastMaintenanceDate" type="date" value="{{ .LastMaintenanceDate.Format "2006-01-02" }}">
 
         <label class="form-label" for="maintenanceInterval">Maintenance Interval (Days)</label>
-        <input class="form-control my-1" id="maintenanceInterval" name="maintenanceInterval" type="number">
+        <input class="form-control my-1" id="maintenanceInterval" name="maintenanceInterval" type="number" value="{{ .MaintenanceInterval }}">
 
         <button class="btn btn-default my-2" type="submit">Save</button>
     </form>

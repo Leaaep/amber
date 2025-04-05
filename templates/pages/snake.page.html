@@ -9,20 +9,21 @@
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 <body>
-    <main class="d-flex align-items-center justify-content-center">
-        <div class="card flex-column align-items-center m-3">
-            <div class="card-header mb-2">
-                <h4 class="h4">{{ .Name }}</h4>
-            </div>
-            <div class="card-body align-items-center">
-                <p>{{ .Birthdate }}</p>
-                <p>{{ .LastFeedingDate }}</p>
-                <p>{{ .FeedingInterval }}</p>
-                <p>{{ .WinterBreakStartDate }}</p>
-                <p>{{ .WinterBreakDuration }}</p>
-            </div>
+{{ template "navbar" }}
+<main class="d-flex align-items-center justify-content-center">
+    <div class="card flex-column align-items-center m-3">
+        <div class="card-header mb-2">
+            <h4 class="h4">{{ .Name }}</h4>
         </div>
-    </main>
+        <div class="card-body align-items-center">
+            <p>{{ .Birthdate }}</p>
+            <p>{{ .LastFeedingDate }}</p>
+            <p>{{ .FeedingInterval }}</p>
+            <p>{{ .WinterBreakStartDate }}</p>
+            <p>{{ .WinterBreakDuration }}</p>
+        </div>
+    </div>
+</main>
 </body>
 </html>
 {{ end }}
